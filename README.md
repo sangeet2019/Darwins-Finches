@@ -4,3 +4,8 @@ Sangeet Lamichhaney (slamichhaney@fas.harvard.edu) and Fan Han (Fan.Han@imbim.uu
 
 
 Disclaimer: We welcome anyone to re-use these materials. But, please note that the codes we are sharing here are specific to this project that were run in the Uppsala University computer cluster (UPPMAX).
+
+
+## Organization of this repository
+
+Each directory contains the scripts for a particular analysis, along with a README describing that analysis.
