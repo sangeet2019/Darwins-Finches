@@ -1,4 +1,4 @@
-## Population genomics of Darwin's Finches
+## Scripts uploaded by
 
 Sangeet Lamichhaney (slamichhaney@fas.harvard.edu) and Fan Han (Fan.Han@imbim.uu.se)
 
