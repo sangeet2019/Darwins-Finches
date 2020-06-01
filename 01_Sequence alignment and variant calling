@@ -21,3 +21,14 @@ java -Xmx20g -Djava.library.path=./native/linux-64 -jar /proj/b2010051/private/U
 
 samtools index Map.sorted.MarkDup.bam
 
+## SNP calling using GATK
+
+#!/bin/bash -l
+#SBATCH -A b2012111
+#SBATCH -p node
+#SBATCH -t 10-00:00:00
+#SBATCH -J E+L
+
+java -Xmx48g -jar /sw/apps/bioinfo/GATK/3.7/GenomeAnalysisTK.jar -T UnifiedGenotyper -R /proj/b2012111/private/reference_assemblies/G.Fortis/geoFor1.fa -I Sample_Pool1/Map.sorted.MarkDup.bam -I Sample_Pool2/Map.sorted.MarkDup.bam -I Sample_Pool3/Map.sorted.MarkDup.bam -I Sample_Pool4/Map.sorted.MarkDup.bam -I Sample_Pool5/Map.sorted.MarkDup.bam -I Sample_Pool6/Map.sorted.MarkDup.bam -I Sample_Pool7/Map.sorted.MarkDup.bam -I Sample_Pool9/Map.sorted.MarkDup.bam -o Early_Late.raw.vcf --genotype_likelihoods_model SNP
+
+
