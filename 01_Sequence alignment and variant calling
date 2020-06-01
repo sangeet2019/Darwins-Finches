@@ -1,1 +1,23 @@
+## Aligning sequence reads to the reference genome assembly of G. fortis using BWA and generate a bam file
+
+#!/bin/bash -l
+#SBATCH -A b2010044
+#SBATCH -p node
+#SBATCH -t 24:00:00
+#SBATCH -J 150731_D00457_0112_BC71DHANXX/Sample_Pool1
+
+module load bioinfo-tools
+module load bwa/0.6.2
+module load samtools
+
+bwa aln -q 5 -l 32 -k 2 -t 16 /proj/b2012111/private/reference_assemblies/G.Fortis/geoFor1.fa /proj/b2012111/private/INBOX/150731_D00457_0112_BC71DHANXX/Sample_Pool1/*_R1_* > F.sai & 
+bwa aln -q 5 -l 32 -k 2 -t 16 /proj/b2012111/private/reference_assemblies/G.Fortis/geoFor1.fa /proj/b2012111/private/INBOX/150731_D00457_0112_BC71DHANXX/Sample_Pool1/*_R2_* > R.sai &
+wait
+
+bwa sampe -r '@RG\tID:150731_D00457_0112_BC71DHANXX/Sample_Pool1\tSM:150731_D00457_0112_BC71DHANXX/Sample_Pool1' -o 1000 /proj/b2012111/private/reference_assemblies/G.Fortis/geoFor1.fa F.sai R.sai  /proj/b2012111/private/INBOX/150731_D00457_0112_BC71DHANXX/Sample_Pool1/*_R1_* /proj/b2012111/private/INBOX/150731_D00457_0112_BC71DHANXX/Sample_Pool1/*_R2_* > Map.sam
+java -Xmx20g -Djava.library.path=./native/linux-64 -jar /proj/b2010051/private/UserDirectories/sangeet/tools/picard-tools-1.59/SamFormatConverter.jar INPUT=Map.sam OUTPUT=Map.bam VALIDATION_STRINGENCY=SILENT
+java -Xmx20g -Djava.library.path=./native/linux-64 -jar /proj/b2010051/private/UserDirectories/sangeet/tools/picard-tools-1.59/SortSam.jar INPUT=Map.bam OUTPUT=Map.sorted.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
+java -Xmx20g -Djava.library.path=./native/linux-64 -jar /proj/b2010051/private/UserDirectories/sangeet/tools/picard-tools-1.59/MarkDuplicates.jar INPUT=Map.sorted.bam OUTPUT=Map.sorted.MarkDup.bam METRICS_FILE=DupMetrics ASSUME_SORTED=true VALIDATION_STRINGENCY=SILENT
+
+samtools index Map.sorted.MarkDup.bam
 
